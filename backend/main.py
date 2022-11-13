@@ -45,7 +45,12 @@ def edit_note(table, id, content):
     table.update_one(query, new_values)
 
 if __name__ == "__main__":
-    database = get_database(CONNECTION_STRING, "notes", "admin", "password")
+    database = get_database(
+        CONNECTION_STRING,
+        "notes",
+        "admin",
+        "password"
+    )
     user = "user1"
     table = get_table(database, user) # TODO add users
     # add_note(table, user, "teste")
