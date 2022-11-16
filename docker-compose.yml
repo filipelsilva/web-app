@@ -13,6 +13,11 @@ services:
     ports:
         - 27017:27017
 
-  # backend:
-  #   build: backend
+  backend:
+    build: backend
+      - 8080:8080
 
+  frontend:
+    build: frontend
+    ports:
+      - 80:80
