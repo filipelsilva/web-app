@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
 
-  mongodb:
+  db:
     image: mongo:latest
     container_name: mongodb
     restart: always

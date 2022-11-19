@@ -1,56 +1,48 @@
-import pymongo, datetime
+import pymongo
+import db
+from flask import Flask, jsonify, request
 
-CONNECTION_STRING = "mongodb://%s:%s@localhost:27017"
-
+client = None
 database = None
-table = None
 user = None
+table = None
+app = Flask("backend")
 
-def get_database(url, database_name, username, password):
-    client = pymongo.MongoClient(url % (username, password))
-    return client[database_name]
+@app.route('/get-notes', methods = ['GET'])
+def get_notes():
+    return db.get_notes(table)
 
-def get_table(database, user):
-    return database[user]
+@app.route('/add-note', methods = ['POST'])
+def add_note():
+    content = request.get_json()
+    print(request.args.get('content'))
+    return {}
+    # return db.add_note(table, user, content)
 
-def print_table(table):
-    for el in table.find({}):
-        print(el)
+@app.route('/remove-note', methods = ['POST'])
+def add_note():
+    # content = request.get_json()
+    # print(request.args.get('content'))
+    return {}
+    # return db.remove-note(table, id)
 
-def add_note(table, user, content):
-    len = table.count_documents({})
-    note = {
-        "date": datetime.datetime.today(),
-        "user": user,
-        "note": content
-    }
-    table.insert_one(note)
-
-def remove_note(table, id):
-    query = {
-        "_id": id
-    }
-    table.delete_one(query)
-
-def edit_note(table, id, content):
-    query = {
-        "_id": id
-    }
-    new_values = {
-        "$set": {
-            "date": datetime.datetime.today(),
-            "note": content
-        }
-    }
-    table.update_one(query, new_values)
+@app.route('/edit-note/<int:id>/', methods = ['POST'])
+def edit_note(id):
+    # content = request.get_json()
+    # print(request.args.get('content'))
+    return {}
+    # db.edit_note(table, id, content)
 
 if __name__ == "__main__":
-    database = get_database(
-        CONNECTION_STRING,
-        "notes",
+    client = db.get_client(
+        "mongodb://%s:%s@localhost:27017",
         "admin",
-        "password"
+        "password",
+    )
+    database = db.get_database(
+        client,
+        "notes",
     )
     user = "user1"
-    table = get_table(database, user) # TODO add users
-    # add_note(table, user, "teste")
+    table = db.get_table(database, user) # TODO add users
+    app.run(debug = True)
