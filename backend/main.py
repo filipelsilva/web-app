@@ -20,7 +20,7 @@ def add_note():
     # return db.add_note(table, user, content)
 
 @app.route('/remove-note', methods = ['POST'])
-def add_note():
+def remove_note():
     # content = request.get_json()
     # print(request.args.get('content'))
     return {}

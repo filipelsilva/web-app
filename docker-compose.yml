@@ -9,15 +9,15 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: notes
     ports:
         - 27017:27017
 
   backend:
     build: backend
-      - 8080:8080
+    ports:
+      - 5000:5000
 
   frontend:
     build: frontend
     ports:
-      - 80:80
+      - 3000:80
