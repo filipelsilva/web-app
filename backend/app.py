@@ -22,10 +22,9 @@ def add_note():
 
 @app.route('/remove-note', methods = ['POST'])
 def remove_note():
-    # content = request.get_json()
-    # print(request.args.get('content'))
-    return {}
-    # return db.remove-note(table, id)
+    id = request.get_json()['id']
+    db.remove_note(table, id)
+    return "Removed note"
 
 @app.route('/edit-note/<int:id>/', methods = ['POST'])
 def edit_note(id):
@@ -36,7 +35,7 @@ def edit_note(id):
 
 if __name__ == "__main__":
     client = db.get_client(
-        "mongodb://%s:%s@database:27017",
+        "mongodb://%s:%s@localhost:27017",
         "admin",
         "password",
     )

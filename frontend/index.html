@@ -16,19 +16,36 @@ function print_notes(data) {
 	}
 	for (const note of data) {
 		var node = document.createElement("li")
-		var edit = document.createElement("button")
+		// create form
+		var form = document.createElement("form")
+		form.setAttribute("name", "edit-note")
+		form.setAttribute("action", "javascript:edit_note()")
+		form.setAttribute("accept-charset", "utf-8")
+		// create input
+		var content = document.createElement("input");
+		content.setAttribute("type", "text");
+		content.setAttribute("id", note._id);
+		content.setAttribute("name", "content");
+		content.setAttribute("value", note.note);
+		// create submit button
+		var edit = document.createElement("input");
+		edit.setAttribute("type", "submit");
+		edit.setAttribute("value", "Edit");
+		// finish form
+		form.append(content)
+		form.append(edit)
+		// remove button
 		var remove = document.createElement("button")
-		edit.innerText = "Edit"
 		remove.innerText = "Remove"
-		node.appendChild(edit)
+		remove.onclick = function() {remove_note(note._id)}
+		// add note to document
+		node.appendChild(form)
 		node.appendChild(remove)
-		node.appendChild(document.createTextNode(" "))
-		node.appendChild(document.createTextNode(note.note))
 		document.querySelector("ul").appendChild(node)
 	}
 }
 
-function add_note(form) {
+function add_note() {
 	const url = "http://localhost:5000/add-note"
 	const xhr = new XMLHttpRequest()
 	const content = {content: document.getElementById("content").value}
@@ -44,10 +61,36 @@ function add_note(form) {
 	})
 }
 
-function remove_note() {
+function remove_note(id) {
+	const url = "http://localhost:5000/remove-note"
+	const xhr = new XMLHttpRequest()
+	const content = {id: id}
+	fetch(url, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*"
+		},
+		method: "POST",
+		body: JSON.stringify(content)
+	}).then(function(res) {
+		get_notes()
+	})
 }
 
 function edit_note() {
+	// const url = "http://localhost:5000/add-note"
+	// const xhr = new XMLHttpRequest()
+	// const content = {content: document.getElementById("content").value}
+	// fetch(url, {
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 		"Access-Control-Allow-Origin": "*"
+	// 	},
+	// 	method: "POST",
+	// 	body: JSON.stringify(content)
+	// }).then(function(res) {
+	// 	get_notes()
+	// })
 }
 </script>
 
@@ -58,7 +101,7 @@ function edit_note() {
 	<body>
 	<h1>Note manager (HTML version)</h1>
 	<h2>Add new note</h2>
-		<form name="new-note" accept-charset="utf-8" action="javascript:add_note(this.form)">Note:
+		<form name="new-note" accept-charset="utf-8" action="javascript:add_note()">Note:
 			<input type="text" id="content" name="content">
 			<input type="submit" value="Submit">
 		</form>

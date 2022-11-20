@@ -1,4 +1,5 @@
-import json, pymongo, datetime
+from datetime import datetime
+import json, pymongo
 
 def get_client(url, username, password):
     return pymongo.MongoClient(url % (username, password))
@@ -14,26 +15,30 @@ def get_notes(table):
 
 def add_note(table, user, content):
     len = table.count_documents({})
+    now = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
     note = {
-        "_id": datetime.datetime.today(),
-        "last-modified": datetime.datetime.today(),
+        "_id": now,
+        "last-modified": now,
         "note": content
     }
     table.insert_one(note)
 
 def remove_note(table, id):
+    print(f"deleting {id}")
     query = {
         "_id": id
     }
+    print(table.count_documents(query))
     table.delete_one(query)
 
 def edit_note(table, id, content):
     query = {
         "_id": id
     }
+    now = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
     new_values = {
         "$set": {
-            "last-modified": datetime.datetime.today(),
+            "last-modified": now,
             "note": content
         }
     }
