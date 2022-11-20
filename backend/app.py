@@ -46,4 +46,8 @@ if __name__ == "__main__":
     )
     user = "user1"
     table = db.get_table(database, user) # TODO add users
-    app.run(debug = True)
+    app.run(
+        host='0.0.0.0',
+        port=5000,
+        debug = True
+    )
