@@ -2,7 +2,11 @@ from datetime import datetime
 import json, pymongo
 
 def get_client(url, username, password):
-    return pymongo.MongoClient(url % (username, password))
+    try:
+        return pymongo.MongoClient(url % (username, password))
+    except pymongo.errors.ConnectionFailure as e:
+        print(f"Could not connect to server: {e}")
+        exit(1)
 
 def get_database(client, database_name):
     return client[database_name]
