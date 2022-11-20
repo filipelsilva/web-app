@@ -10,20 +10,6 @@ function get_notes() {
 	})
 }
 
-function add_note(form) {
-	const url = "http://localhost:5000/add-note"
-	const xhr = new XMLHttpRequest()
-	const content = JSON.stringify({content: document.getElementById("content").value})
-	xhr.open("POST", url, true)
-	xhr.setRequestHeader("Content-Type", "application/json")
-	xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
-	xhr.send(content)
-	xhr.onreadystatechange = (e) => {
-		console.log(xhr.responseText)
-		get_notes()
-	}
-}
-
 function print_notes(data) {
 	for (const node of document.querySelectorAll("li")) {
 		document.querySelector("ul").removeChild(node)
@@ -34,6 +20,23 @@ function print_notes(data) {
 		document.querySelector("ul").appendChild(node)
 	}
 	console.log(document.querySelectorAll("li"))
+}
+
+function add_note(form) {
+	const url = "http://localhost:5000/add-note"
+	const xhr = new XMLHttpRequest()
+	const content = {content: document.getElementById("content").value}
+	fetch(url, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*"
+		},
+		method: "POST",
+		body: JSON.stringify(content)
+	}).then(function(res) {
+		console.log(res)
+		get_notes()
+	})
 }
 
 function remove_note() {
