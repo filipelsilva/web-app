@@ -36,7 +36,7 @@ def edit_note(id):
 
 if __name__ == "__main__":
     client = db.get_client(
-        "mongodb://%s:%s@localhost:27017",
+        "mongodb://%s:%s@database:27017",
         "admin",
         "password",
     )
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     user = "user1"
     table = db.get_table(database, user) # TODO add users
     app.run(
-        host='0.0.0.0',
-        port=5000,
+        host = '0.0.0.0',
+        port = 5000,
         debug = True
     )

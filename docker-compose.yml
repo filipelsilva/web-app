@@ -2,25 +2,26 @@ version: "3.9"
 
 services:
 
-  db:
+  database:
     image: mongo:latest
     container_name: mongodb
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
-    network_mode: "host"
     ports:
-        - 27017:27017
+      - 27017:27017
 
   backend:
     build: backend
-    network_mode: "host"
+    links:
+      - "database"
     ports:
       - 5000:5000
 
   frontend:
     build: frontend
-    network_mode: "host"
+    links:
+      - "backend"
     ports:
       - 3000:80
