@@ -2,7 +2,7 @@
 
 <script>
 function get_notes() {
-	const url = "http://backend:5000/get-notes"
+	const url = "http://localhost:5000/get-notes"
 	fetch(url).then(function(response) { 
 		return response.json()
 	}).then(function(data) {
@@ -29,7 +29,7 @@ function print_notes(data) {
 }
 
 function add_note(form) {
-	const url = "http://backend:5000/add-note"
+	const url = "http://localhost:5000/add-note"
 	const xhr = new XMLHttpRequest()
 	const content = {content: document.getElementById("content").value}
 	fetch(url, {
