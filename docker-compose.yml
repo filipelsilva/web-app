@@ -8,25 +8,15 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
-    networks:
-      - host
     ports:
       - 27017:27017
 
   backend:
     build: backend
-    networks:
-      - host
     ports:
       - 5000:5000
 
   frontend:
     build: frontend
-    networks:
-      - host
     ports:
       - 3000:80
-
-networks:
-  host:
-    driver: bridge
