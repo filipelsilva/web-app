@@ -1,23 +1,24 @@
 import pymongo
 import db
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 client = None
 database = None
 user = None
 table = None
 app = Flask("backend")
+CORS(app)
 
 @app.route('/get-notes', methods = ['GET'])
 def get_notes():
-    return db.get_notes(table)
+    return jsonify(db.get_notes(table))
 
 @app.route('/add-note', methods = ['POST'])
 def add_note():
-    content = request.get_json()
-    print(request.args.get('content'))
-    return {}
-    # return db.add_note(table, user, content)
+    content = request.get_json()['content']
+    db.add_note(table, user, content)
+    return "Added note"
 
 @app.route('/remove-note', methods = ['POST'])
 def remove_note():

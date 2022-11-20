@@ -1,4 +1,37 @@
 <!DOCTYPE html>
+
+<script>
+function add_note(form) {
+	const url = "http://localhost:5000/add-note"
+	const xhr = new XMLHttpRequest()
+	const content = JSON.stringify({content: document.getElementById("content").value})
+	xhr.open("POST", url, true)
+	xhr.setRequestHeader("Content-Type", "application/json")
+	xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
+	xhr.send(content)
+	xhr.onreadystatechange = (e) => {
+		console.log(xhr.responseText)
+	}
+}
+
+function get_notes() {
+	const url = "http://localhost:5000/get-notes"
+	const xhr = new XMLHttpRequest()
+	xhr.open("GET", url, false)
+	xhr.setRequestHeader("Content-Type", "application/json")
+	xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
+	xhr.send()
+	const response = xhr.responseText
+	console.log(response)
+	document.body.innerHTML += "<ul>"
+	for (const note of response) {
+		console.log(note)
+		document.body.innerHTML += "<li>"
+	}
+	document.body.innerHTML += "</ul>"
+}
+</script>
+
 <html>
 	<head>
 		<title>Note manager (HTML version)</title>
@@ -6,17 +39,15 @@
 	<body>
 	<h1>Note manager (HTML version)</h1>
 	<h2>Add new note</h2>
-		<form action="http://localhost:5000/add-note" method="post">
-			<label for="note">Note:</label>
-			<input type="text" id="note" name="content">
+		<form name="new-note" action="javascript:add_note(this.form)">Note:
+			<input type="text" id="content" name="content">
 			<input type="submit" value="Submit">
 		</form>
 	</body>
 	<h2>All notes</h2>
-	<ul>
-		<li>Note1</li>
-		<li>Note2</li>
-		<li>Note3</li>
-		<li>Note4</li>
-	</ul>
+
+	<script>
+	get_notes()
+	</script>
+
 </html>
