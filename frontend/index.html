@@ -19,7 +19,8 @@ function print_notes(data) {
 		// create form
 		var form = document.createElement("form")
 		form.setAttribute("name", "edit-note")
-		form.setAttribute("action", "javascript:edit_note()")
+		form.setAttribute("action", "javascript:;")
+		form.setAttribute("onsubmit", "edit_note(this)")
 		form.setAttribute("accept-charset", "utf-8")
 		// create input
 		var content = document.createElement("input");
@@ -45,10 +46,11 @@ function print_notes(data) {
 	}
 }
 
-function add_note() {
+function add_note(form) {
 	const url = "http://localhost:5000/add-note"
 	const xhr = new XMLHttpRequest()
-	const content = {content: document.getElementById("content").value}
+	const note = form.children[0].value
+	const content = {content: note}
 	fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
@@ -59,6 +61,7 @@ function add_note() {
 	}).then(function(res) {
 		get_notes()
 	})
+	form.reset()
 }
 
 function remove_note(id) {
@@ -77,20 +80,22 @@ function remove_note(id) {
 	})
 }
 
-function edit_note() {
-	// const url = "http://localhost:5000/add-note"
-	// const xhr = new XMLHttpRequest()
-	// const content = {content: document.getElementById("content").value}
-	// fetch(url, {
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 		"Access-Control-Allow-Origin": "*"
-	// 	},
-	// 	method: "POST",
-	// 	body: JSON.stringify(content)
-	// }).then(function(res) {
-	// 	get_notes()
-	// })
+function edit_note(form) {
+	const url = "http://localhost:5000/edit-note"
+	const xhr = new XMLHttpRequest()
+	const id = form.children[0].id
+	const new_note = form.children[0].value
+	const content = {id: id, content: new_note}
+	fetch(url, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*"
+		},
+		method: "POST",
+		body: JSON.stringify(content)
+	}).then(function(res) {
+		get_notes()
+	})
 }
 </script>
 
@@ -101,7 +106,7 @@ function edit_note() {
 	<body>
 	<h1>Note manager (HTML version)</h1>
 	<h2>Add new note</h2>
-		<form name="new-note" accept-charset="utf-8" action="javascript:add_note()">Note:
+		<form name="new-note" accept-charset="utf-8" action="javascript:;" onsubmit="add_note(this)">Note:
 			<input type="text" id="content" name="content">
 			<input type="submit" value="Submit">
 		</form>

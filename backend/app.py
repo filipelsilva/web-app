@@ -26,12 +26,13 @@ def remove_note():
     db.remove_note(table, id)
     return "Removed note"
 
-@app.route('/edit-note/<int:id>/', methods = ['POST'])
-def edit_note(id):
-    # content = request.get_json()
-    # print(request.args.get('content'))
-    return {}
-    # db.edit_note(table, id, content)
+@app.route('/edit-note', methods = ['POST'])
+def edit_note():
+    req = request.get_json()
+    id, content = req['id'], req['content']
+    print(id, content)
+    db.edit_note(table, id, content)
+    return "Edited note"
 
 if __name__ == "__main__":
     client = db.get_client(
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     user = "user1"
     table = db.get_table(database, user) # TODO add users
     app.run(
-        host = '0.0.0.0',
+        host = "0.0.0.0",
         port = 5000,
         debug = True
     )
