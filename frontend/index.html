@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 
 <script>
+function get_notes() {
+	const url = "http://localhost:5000/get-notes"
+	fetch(url).then(function(response) { 
+		return response.json()
+	}).then(function(data) {
+		print_notes(data)
+	})
+}
+
 function add_note(form) {
 	const url = "http://localhost:5000/add-note"
 	const xhr = new XMLHttpRequest()
@@ -11,24 +20,26 @@ function add_note(form) {
 	xhr.send(content)
 	xhr.onreadystatechange = (e) => {
 		console.log(xhr.responseText)
+		get_notes()
 	}
 }
 
-function get_notes() {
-	const url = "http://localhost:5000/get-notes"
-	const xhr = new XMLHttpRequest()
-	xhr.open("GET", url, false)
-	xhr.setRequestHeader("Content-Type", "application/json")
-	xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
-	xhr.send()
-	const response = xhr.responseText
-	console.log(response)
-	document.body.innerHTML += "<ul>"
-	for (const note of response) {
-		console.log(note)
-		document.body.innerHTML += "<li>"
+function print_notes(data) {
+	for (const node of document.querySelectorAll("li")) {
+		document.querySelector("ul").removeChild(node)
 	}
-	document.body.innerHTML += "</ul>"
+	for (const note of data) {
+		var node = document.createElement("li")
+		node.appendChild(document.createTextNode(note.note))
+		document.querySelector("ul").appendChild(node)
+	}
+	console.log(document.querySelectorAll("li"))
+}
+
+function remove_note() {
+}
+
+function edit_note() {
 }
 </script>
 
@@ -45,6 +56,8 @@ function get_notes() {
 		</form>
 	</body>
 	<h2>All notes</h2>
+	<ul>
+	</ul>
 
 	<script>
 	get_notes()

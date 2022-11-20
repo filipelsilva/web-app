@@ -17,7 +17,6 @@ def add_note(table, user, content):
     note = {
         "_id": datetime.datetime.today(),
         "last-modified": datetime.datetime.today(),
-        "user": user,
         "note": content
     }
     table.insert_one(note)
