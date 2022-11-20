@@ -16,10 +16,16 @@ function print_notes(data) {
 	}
 	for (const note of data) {
 		var node = document.createElement("li")
+		var edit = document.createElement("button")
+		var remove = document.createElement("button")
+		edit.innerText = "Edit"
+		remove.innerText = "Remove"
+		node.appendChild(edit)
+		node.appendChild(remove)
+		node.appendChild(document.createTextNode(" "))
 		node.appendChild(document.createTextNode(note.note))
 		document.querySelector("ul").appendChild(node)
 	}
-	console.log(document.querySelectorAll("li"))
 }
 
 function add_note(form) {
@@ -34,7 +40,6 @@ function add_note(form) {
 		method: "POST",
 		body: JSON.stringify(content)
 	}).then(function(res) {
-		console.log(res)
 		get_notes()
 	})
 }
