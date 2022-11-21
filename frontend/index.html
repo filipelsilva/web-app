@@ -50,7 +50,6 @@ function print_notes(data) {
 
 function add_note(form) {
 	const url = backend + "/add-note"
-	const note = form.children[0].value
 	fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
@@ -58,7 +57,7 @@ function add_note(form) {
 		},
 		method: "POST",
 		body: JSON.stringify({
-			content: note
+			content: form.children[0].value
 		})
 	}).then(function(res) {
 		get_notes()
@@ -67,23 +66,14 @@ function add_note(form) {
 }
 
 function remove_note(id) {
-	const url = backend + "/remove-note"
-	fetch(url, {
-		headers: {
-			"Content-Type": "application/json",
-			"Access-Control-Allow-Origin": "*"
-		},
-		method: "POST",
-		body: JSON.stringify({
-			id: id
-		})
-	}).then(function(res) {
+	const url = backend + "/remove-note/" + id
+	fetch(url).then(function(res) {
 		get_notes()
 	})
 }
 
 function edit_note(form) {
-	const url = backend + "/edit-note/" + form.children.id
+	const url = backend + "/edit-note/" + form.children[0].id
 	fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
@@ -91,7 +81,7 @@ function edit_note(form) {
 		},
 		method: "POST",
 		body: JSON.stringify({
-			content: form.children.value
+			content: form.children[0].value
 		})
 	}).then(function(res) {
 		get_notes()
