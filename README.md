@@ -13,8 +13,7 @@ This is a playground for me, to test some networking stuff between services.
 ## FIXME
 
 - [x] Some "bridges" use localhost, others the alias defined in the compose file
-
-<details open>
+- <details close>
 <summary>About that:</summary>
 This is not quite true. Between the database and the backend, the connection is
 done through the Docker network, hence the use of "backend:27017" and not
