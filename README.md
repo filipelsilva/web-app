@@ -6,7 +6,7 @@ This is a playground for me, to test some networking stuff between services.
 
 - [x] Do basic functionality
 - [ ] Update _id to be UNIX-style timestamp (this will allow for a different
-  routing in at least one backend function) 
+  routing in at least one backend function)
 - [ ] Add authentication module
 - [ ] Add other frameworks
 
