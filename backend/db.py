@@ -5,11 +5,7 @@ def get_timestamp_now():
     return str(int(datetime.utcnow().timestamp()))
 
 def get_client(url, username, password):
-    try:
-        return pymongo.MongoClient(url % (username, password))
-    except pymongo.errors.ConnectionFailure as e:
-        print(f"Could not connect to server: {e}")
-        exit(1)
+    return pymongo.MongoClient(url % (username, password))
 
 def get_database(client, database_name):
     return client[database_name]
