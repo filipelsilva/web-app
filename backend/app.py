@@ -26,11 +26,10 @@ def remove_note():
     db.remove_note(table, id)
     return "Removed note"
 
-@app.route('/edit-note', methods = ['POST'])
-def edit_note():
+@app.route('/edit-note/<id>', methods = ['POST'])
+def edit_note(id):
     req = request.get_json()
-    id, content = req['id'], req['content']
-    print(id, content)
+    content = req['content']
     db.edit_note(table, id, content)
     return "Edited note"
 

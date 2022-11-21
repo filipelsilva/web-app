@@ -81,11 +81,11 @@ function remove_note(id) {
 }
 
 function edit_note(form) {
-	const url = "http://localhost:5000/edit-note"
-	const xhr = new XMLHttpRequest()
 	const id = form.children[0].id
+	const url = "http://localhost:5000/edit-note/" + id
+	const xhr = new XMLHttpRequest()
 	const new_note = form.children[0].value
-	const content = {id: id, content: new_note}
+	const content = {content: new_note}
 	fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
