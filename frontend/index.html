@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 
 <script>
+const backend = "http://localhost:5000"
+
 function get_notes() {
-	const url = "http://localhost:5000/get-notes"
+	const url = backend + "/get-notes"
 	fetch(url).then(function(response) { 
 		return response.json()
 	}).then(function(data) {
@@ -47,17 +49,17 @@ function print_notes(data) {
 }
 
 function add_note(form) {
-	const url = "http://localhost:5000/add-note"
-	const xhr = new XMLHttpRequest()
+	const url = backend + "/add-note"
 	const note = form.children[0].value
-	const content = {content: note}
 	fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
 			"Access-Control-Allow-Origin": "*"
 		},
 		method: "POST",
-		body: JSON.stringify(content)
+		body: JSON.stringify({
+			content: note
+		})
 	}).then(function(res) {
 		get_notes()
 	})
@@ -65,34 +67,32 @@ function add_note(form) {
 }
 
 function remove_note(id) {
-	const url = "http://localhost:5000/remove-note"
-	const xhr = new XMLHttpRequest()
-	const content = {id: id}
+	const url = backend + "/remove-note"
 	fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
 			"Access-Control-Allow-Origin": "*"
 		},
 		method: "POST",
-		body: JSON.stringify(content)
+		body: JSON.stringify({
+			id: id
+		})
 	}).then(function(res) {
 		get_notes()
 	})
 }
 
 function edit_note(form) {
-	const id = form.children[0].id
-	const url = "http://localhost:5000/edit-note/" + id
-	const xhr = new XMLHttpRequest()
-	const new_note = form.children[0].value
-	const content = {content: new_note}
+	const url = backend + "/edit-note/" + form.children.id
 	fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
 			"Access-Control-Allow-Origin": "*"
 		},
 		method: "POST",
-		body: JSON.stringify(content)
+		body: JSON.stringify({
+			content: form.children.value
+		})
 	}).then(function(res) {
 		get_notes()
 	})
@@ -102,6 +102,9 @@ function edit_note(form) {
 <html>
 	<head>
 		<title>Note manager (HTML version)</title>
+		<script>
+		get_notes()
+		</script>
 	</head>
 	<body>
 	<h1>Note manager (HTML version)</h1>
@@ -114,9 +117,4 @@ function edit_note(form) {
 	<h2>All notes</h2>
 	<ul>
 	</ul>
-
-	<script>
-	get_notes()
-	</script>
-
 </html>

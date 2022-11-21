@@ -35,7 +35,7 @@ def edit_note(id):
 
 if __name__ == "__main__":
     client = db.get_client(
-        "mongodb://%s:%s@localhost:27017",
+        "mongodb://%s:%s@database:27017",
         "admin",
         "password",
     )
